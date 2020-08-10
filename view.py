@@ -1,13 +1,15 @@
 from tkinter import *
 from tkinter import filedialog, Listbox
 
+from yt_dl_conections import EventHandler
+
 
 class Window(Frame):
     def __init__(self, master=None, handle=None):
         Frame.__init__(self, master)
         self.master = master
 
-        self.download_path = '~/Downloads'
+        self.handler = EventHandler(self.master)
 
         # Pre-sets
         self.set_geometry()
@@ -19,17 +21,14 @@ class Window(Frame):
 
     def set_geometry(self):
         """This function to set a window size"""
-        
         self.master.geometry('760x200')
     
     def set_titles(self):
         """This function set the window title"""        
-
         self.master.title('Youtube Downloader')
 
     def set_url_entry(self):
         """This function set the area to put the url"""        
-
         download_label = Label(self.master, text='Put the URL below')
 
         download_label.place(x=10 ,y=41)
@@ -42,11 +41,9 @@ class Window(Frame):
         """This function set the button to start the downloading, getting the
         url, format and destiny folder to download
         """
-
         def donwload():
-            """To implement
-            """            
-            pass
+            # Calling the handler
+            self.handler.download_button_event_handler()
 
         button = Button(self.master, text='Download', fg='white', bg='red', command=donwload)
 
@@ -57,22 +54,24 @@ class Window(Frame):
         if not select the dir='~/Downloads'
         """
         def select():
-            folder_selector = filedialog.Directory(initialdir=self.download_path, title='Select a folder to download')
+            # Open window to select a file
+            folder_selector = filedialog.Directory(initialdir=self.handler.output_path, title='Select a folder to download')
 
             folder_selector.show()
 
-            path = folder_selector.__getattribute__('directory')
-            
-            if path != '':
-                folder['text'] = path
+            # Calling the handler
+            path = self.handler.folder_select_handler(folder_selector.__getattribute__('directory'))
 
-        folder = Button(self.master, text=self.download_path, width=30 ,command=select)
+            # chaging the output path to the new diretory
+            folder['text'] = path
+
+        folder = Button(self.master, text=self.handler.output_path, width=30 ,command=select)
 
         folder.place(x=40, y=150)
 
     def set_format_selector(self):
         """This function set a list of formats to user choice"""
-
+        # Available format
         formats = ['Video and Audio', 'Audio only']
 
         download_label = Label(self.master, text='Select a format')
@@ -81,6 +80,7 @@ class Window(Frame):
 
         self.format_select = Listbox(self.master, width=14, height=2, selectbackground='red',  borderwidth=3)
 
+        # Putting the available formats in the list
         for format in formats:
             self.format_select.insert(END, format)
 
