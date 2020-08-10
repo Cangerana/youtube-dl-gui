@@ -1,6 +1,8 @@
 from tkinter import Event
 from tkinter.constants import SEL_FIRST
 
+from download import Video
+
 
 class EventHandler():
     """Class to work with events ganerated by user"""
@@ -21,7 +23,7 @@ class EventHandler():
         Returns:
             String: Processed path
         """
-        if path != '':
+        if path != '' and path != ():
             self.output_path = path
         
         return self.output_path
@@ -35,3 +37,6 @@ class EventHandler():
         """
         self.output_format =  format if not None else ''
         self.url = url if not None else ''
+
+        video = Video(self.url, self.output_format, self.output_path)
+        video.download()

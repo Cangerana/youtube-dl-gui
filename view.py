@@ -46,7 +46,7 @@ class Window(Frame):
             """Calling the handler"""
             url = self.url_entry.get()
             format = self.format_select.get(ACTIVE)
-            
+
             self.handler.download_button_event_handler(url=url, format=format)
 
         # Set button in the main window
@@ -63,7 +63,8 @@ class Window(Frame):
             folder_selector.show()
 
             # Calling the handler
-            path = self.handler.folder_select_handler(folder_selector.__getattribute__('directory'))
+            path = folder_selector.__getattribute__('directory')
+            path = self.handler.folder_select_handler(path)
 
             # chaging the output path to the new diretory
             folder['text'] = path
