@@ -26,7 +26,7 @@ class Window(Frame):
         self.master.title(title)
 
     def set_url_entry(self):
-        download_label = Label(self.master, text='Put the url below')
+        download_label = Label(self.master, text='Put the URL below')
 
         download_label.place(x=10 ,y=41)
 
@@ -69,7 +69,7 @@ class Window(Frame):
     def set_format_selector(self):
         formats = ['Video and Audio', 'Audio only']
 
-        download_label = Label(self.master, text='Selec a format')
+        download_label = Label(self.master, text='Select a format')
         
         download_label.place(x=630 ,y=32)
 
@@ -83,9 +83,6 @@ class Window(Frame):
 
 if __name__ == '__main__':
     root = Tk()
-    handler = EventHandler()
+    handler = EventHandler(root)
     app = Window(root, handler)
     root.mainloop()
-
-
-
