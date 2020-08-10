@@ -9,6 +9,7 @@ class Window(Frame):
 
         self.download_path = '~/Downloads'
 
+        # Pre-sets
         self.set_geometry()
         self.set_titles()
         self.set_url_entry()
@@ -17,12 +18,18 @@ class Window(Frame):
         self.set_format_selector()
 
     def set_geometry(self):
+        """This function to set a window size"""
+        
         self.master.geometry('760x200')
     
     def set_titles(self):
+        """This function set the window title"""        
+
         self.master.title('Youtube Downloader')
 
     def set_url_entry(self):
+        """This function set the area to put the url"""        
+
         download_label = Label(self.master, text='Put the URL below')
 
         download_label.place(x=10 ,y=41)
@@ -32,7 +39,13 @@ class Window(Frame):
         self.url_entry.place(x=10 ,y=61)
 
     def set_download_button(self):
+        """This function set the button to start the downloading, getting the
+        url, format and destiny folder to download
+        """
+
         def donwload():
+            """To implement
+            """            
             pass
 
         button = Button(self.master, text='Download', fg='white', bg='red', command=donwload)
@@ -40,6 +53,9 @@ class Window(Frame):
         button.place(x=645, y=150)
 
     def set_folder_selector(self):
+        """This function set de button to select a destiny folder
+        if not select the dir='~/Downloads'
+        """
         def select():
             folder_selector = filedialog.Directory(initialdir=self.download_path, title='Select a folder to download')
 
@@ -55,6 +71,8 @@ class Window(Frame):
         folder.place(x=40, y=150)
 
     def set_format_selector(self):
+        """This function set a list of formats to user choice"""
+
         formats = ['Video and Audio', 'Audio only']
 
         download_label = Label(self.master, text='Select a format')
