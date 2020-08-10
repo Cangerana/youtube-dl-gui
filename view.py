@@ -3,6 +3,7 @@ from tkinter import filedialog, Listbox
 
 from yt_dl_conections import EventHandler
 
+from time import sleep
 
 class Window(Frame):
     def __init__(self, master=None, handle=None):
@@ -24,17 +25,17 @@ class Window(Frame):
         self.master.geometry('760x200')
     
     def set_titles(self):
-        """This function set the window title"""        
+        """This function set the title of the window"""        
         self.master.title('Youtube Downloader')
 
     def set_url_entry(self):
-        """This function set the area to put the url"""        
-        download_label = Label(self.master, text='Put the URL below')
+        """This function set the area to put the url"""
+        # Put the label above the entry box
+        entry_label = Label(self.master, text='Put the URL below')
+        entry_label.place(x=10 ,y=41)
 
-        download_label.place(x=10 ,y=41)
-
+        # Put the entry box in the main window
         self.url_entry = Entry(self.master, width=70, borderwidth=3, highlightcolor='red')
-
         self.url_entry.place(x=10 ,y=61)
 
     def set_download_button(self):
@@ -42,11 +43,14 @@ class Window(Frame):
         url, format and destiny folder to download
         """
         def donwload():
-            # Calling the handler
-            self.handler.download_button_event_handler()
+            """Calling the handler"""
+            url = self.url_entry.get()
+            format = self.format_select.get(ACTIVE)
+            
+            self.handler.download_button_event_handler(url=url, format=format)
 
+        # Set button in the main window
         button = Button(self.master, text='Download', fg='white', bg='red', command=donwload)
-
         button.place(x=645, y=150)
 
     def set_folder_selector(self):
@@ -54,9 +58,8 @@ class Window(Frame):
         if not select the dir='~/Downloads'
         """
         def select():
-            # Open window to select a file
+            # Open a new window to select a file
             folder_selector = filedialog.Directory(initialdir=self.handler.output_path, title='Select a folder to download')
-
             folder_selector.show()
 
             # Calling the handler
@@ -65,19 +68,20 @@ class Window(Frame):
             # chaging the output path to the new diretory
             folder['text'] = path
 
+        # put the button to select a folder in the main window
         folder = Button(self.master, text=self.handler.output_path, width=30 ,command=select)
-
         folder.place(x=40, y=150)
 
     def set_format_selector(self):
         """This function set a list of formats to user choice"""
-        # Available format
+        # Available formats        
         formats = ['Video and Audio', 'Audio only']
 
-        download_label = Label(self.master, text='Select a format')
-        
-        download_label.place(x=630 ,y=32)
-
+        # Put the label above the list box
+        select_label = Label(self.master, text='Select a format')
+        select_label.place(x=630 ,y=32)
+    
+        # put the listbox to select a format in the main window
         self.format_select = Listbox(self.master, width=14, height=2, selectbackground='red',  borderwidth=3)
 
         # Putting the available formats in the list

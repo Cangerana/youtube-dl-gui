@@ -11,7 +11,6 @@ class App():
 
     def run(self):
         """This function start the program"""
-
         self.master.mainloop()
 
 
