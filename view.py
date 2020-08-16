@@ -12,6 +12,8 @@ class Window(Frame):
 
         self.download_path = self.handle.dir_path
 
+        self.format = ' video and audio '
+
         self.set_geometry()
         self.set_titles('Youtube Downloader')
         self.set_url_entry()
@@ -39,7 +41,7 @@ class Window(Frame):
         def donwload():
             url = self.url_entry.get()
 
-            format = self.format_select.get(ACTIVE)
+            format = self.format[0]
 
             self.handle.download_button_handler(url, format)
 
@@ -55,7 +57,7 @@ class Window(Frame):
             folder_selector.show()
 
             path = folder_selector.__getattribute__('directory')
-            
+
             if path != '':
                 folder['text'] = path
 
@@ -67,19 +69,46 @@ class Window(Frame):
         folder.place(x=40, y=150)
 
     def set_format_selector(self):
-        formats = ['Video and Audio', 'Audio only']
+        def select():
+            url = self.url_entry.get()
+
+            formats = self.handle.format_selector_handler(url)
+            if 'Url' in formats:
+                self.error(msg=formats)
+            else:
+                self.new_format_select(formats)
 
         download_label = Label(self.master, text='Select a format')
-        
+
         download_label.place(x=630 ,y=32)
 
-        self.format_select = Listbox(self.master, width=14, height=2, selectbackground='red',  borderwidth=3)
+        self.format_select = Button(self.master, text=self.format[1:-1] ,width=16, height=1, command=select)
+
+        self.format_select.place(x=600 ,y=58)
+
+    def new_format_select(self, formats):
+        def select():
+            self.format = format_list.get(ACTIVE)
+            print(self.format)
+            new_window.destroy()
+            self.set_format_selector()
+
+        new_window = Toplevel(self.master)
+        new_window.title('Select a new format')
+        # new_window.geometry("200x200") 
+
+        format_list = Listbox(new_window, width=25, height=len(formats), selectbackground='red',  borderwidth=3)
 
         for format in formats:
-            self.format_select.insert(END, format)
+            format_list.insert(END, format)
 
-        self.format_select.place(x=630 ,y=52)
+        format_list.grid()
 
+        ok_button = Button(new_window, text='Select', command=select)
+        ok_button.grid()
+
+    def error(self, msg):
+        pass
 
 if __name__ == '__main__':
     root = Tk()

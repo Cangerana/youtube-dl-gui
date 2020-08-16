@@ -10,21 +10,35 @@ class EventHandler():
         self.master = master
         self.url = ''
         self.dir_path = '~/Downloads'
-        self.format = {'Video and Audio': 'bestvideo', 'Audio only': 'bestaudio'}
+
+    def format_selector_handler(self, url):
+        """ Get the URl and return a list of possible formats"""
+        if len(url) >= 11 and url[-11:].isalnum():
+            system(f'youtube-dl -F {url}>>format_log') #gera um arquivo com os formatos
+            all_formats = self.get_formats()
+            system('rm format_log')
+        else:
+            return 'Url inválida'
+
+        formats = []
+
+        for format in all_formats:
+            formats.append([format['format'], format['code'], format['extension'], format['size']])
+
+        return formats
 
     def download_button_handler(self, url, format):
         self.url = url
+
         ls = listdir(".")
 
-        print(f'youtube-dl -f {self.format[format]} {self.url}')
+        print(f'youtube-dl -f {format} {self.url}')
 
         # text URL => https://www.youtube.com/watch?v=68r9ONA3pBY
-        if format == 'Audio only':
-            while (system(f'youtube-dl -f {self.format[format]} {self.url}')) != 0:
-                print('loading...')
+        if len(format) >=2:
+            system(f'youtube-dl -f {format} {self.url}')
         else:
-            while (system(f'youtube-dl {self.url}')) != 0:
-                print('loading...')
+            system(f'youtube-dl {self.url}')
 
         title = [file for file in listdir(".") if file not in ls].pop()
 
@@ -53,3 +67,21 @@ class EventHandler():
 
     def quit(self):
         self.master.quit()
+
+    def get_formats(self):
+        with open('format_log', 'r') as formats:
+            main_format = []
+            for format in formats.readlines()[3:]:
+                aux_format = format.split()
+
+                if aux_format[2] == 'audio' or aux_format[-1] == '(best)':
+                    main_format.append(
+                        {
+                        'format': aux_format[0],
+                        'extension': aux_format[1],
+                        'code': aux_format[2],
+                        'size': aux_format[-1] if aux_format[-1] != '(best)' else aux_format[-2]
+                        }
+                    )
+
+        return main_format
