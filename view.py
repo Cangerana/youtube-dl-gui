@@ -21,15 +21,18 @@ class Window(Frame):
         self.set_format_selector()
 
     def set_geometry(self):
-        """This function to set a window size"""
+        """Set a window size"""
+
         self.master.geometry('760x200')
     
     def set_titles(self):
-        """This function set the title of the window"""        
+        """Set the title of the window"""        
+
         self.master.title('Youtube Downloader')
 
     def set_url_entry(self):
-        """This function set the area to put the url"""
+        """Set the area to put the url"""
+        
         # Put the label above the entry box
         entry_label = Label(self.master, text='Put the URL below')
         entry_label.place(x=10 ,y=41)
@@ -42,6 +45,7 @@ class Window(Frame):
         """This function set the button to start the downloading, getting the
         url, format and destiny folder to download
         """
+
         def donwload():
             """Calling the handler"""
             url = self.url_entry.get()
@@ -57,9 +61,10 @@ class Window(Frame):
         """This function set de button to select a destiny folder
         if not select the dir='~/Downloads'
         """
+
         def select():
             # Open a new window to select a file
-            folder_selector = filedialog.Directory(initialdir=self.handler.output_path, title='Select a folder to download')
+            folder_selector = filedialog.Directory(initialdir=self.handler.video.path, title='Select a folder to download')
             folder_selector.show()
 
             # Calling the handler
@@ -70,12 +75,13 @@ class Window(Frame):
             folder['text'] = path
 
         # put the button to select a folder in the main window
-        folder = Button(self.master, text=self.handler.output_path, width=30 ,command=select)
+        folder = Button(self.master, text=self.handler.video.path, width=30 ,command=select)
         folder.place(x=40, y=150)
 
     def set_format_selector(self):
         """This function set a list of formats to user choice"""
         # Available formats        
+
         formats = ['Video and Audio', 'Audio only']
 
         # Put the label above the list box
@@ -90,9 +96,3 @@ class Window(Frame):
             self.format_select.insert(END, format)
 
         self.format_select.place(x=630 ,y=52)
-
-
-if __name__ == '__main__':
-    root = Tk()
-    app = Window(root)
-    root.mainloop()

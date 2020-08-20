@@ -1,7 +1,7 @@
 from tkinter import Event
 from tkinter.constants import SEL_FIRST
 
-from download import Video
+from youtube import Video
 
 
 class EventHandler():
@@ -9,34 +9,32 @@ class EventHandler():
 
     def __init__(self, master):
         self.master = master
-
-        self.url = ''
-        self.output_format = ''
-        self.output_path = '~/Downloads'
+        self.video = Video()
 
     def folder_select_handler(self, path):
-        """Get a selected output path an analize
-
+        """Valid the selected destiny path
         Args:
-            path (String): Destiny path of the download
+            path: str
 
         Returns:
-            String: Processed path
+            path: str
         """
         if path != '' and path != ():
-            self.output_path = path
+            self.video.path = path
         
-        return self.output_path
+        return self.video.path
 
     def download_button_event_handler(self, url=None, format=None):
         """Get the typed URL selected format when the user click in download
 
         Args:
-            url (URL, optional): Video URL. Defaults to None.
-            format (String, optional): Download format. Defaults to None.
+            url: str
+            format: str (optional)
         """
-        self.output_format =  format if not None else ''
-        self.url = url if not None else ''
+        format =  format if not None else ''
+        url = url if not None else ''
 
-        video = Video(self.url, self.output_format, self.output_path)
-        video.download()
+        self.video.url = url
+        self.output_format = format
+
+        self.video.download()
