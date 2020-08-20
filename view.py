@@ -49,7 +49,7 @@ class Window(Frame):
         def donwload():
             """Calling the handler"""
             url = self.url_entry.get()
-            format = self.format_select.get(ACTIVE)
+            # format = self.format_select.get(ACTIVE)
 
             self.handler.download_button_event_handler(url=url, format=format)
 
@@ -79,20 +79,48 @@ class Window(Frame):
         folder.place(x=40, y=150)
 
     def set_format_selector(self):
-        """This function set a list of formats to user choice"""
-        # Available formats        
+        """This the button formats that call a pop-up when clicked"""
 
-        formats = ['Video and Audio', 'Audio only']
+        def select():
+            url = self.url_entry.get()
+            formats = []
+            # formats = self.handler.format_selector_handler(url)
+            # if 'Url' in formats:
+            #     self.error(msg=formats)
+            # else:
+            #     self.new_format_select(formats)
+            self.new_format_select(formats)
 
-        # Put the label above the list box
-        select_label = Label(self.master, text='Select a format')
-        select_label.place(x=630 ,y=32)
-    
-        # put the listbox to select a format in the main window
-        self.format_select = Listbox(self.master, width=14, height=2, selectbackground='red',  borderwidth=3)
+        download_label = Label(self.master, text='Select a format')
 
-        # Putting the available formats in the list
+        download_label.place(x=630 ,y=32)
+
+        self.format_select = Button(self.master, text=self.handler.video.format[1:-1] ,width=16, height=1, command=select)
+
+        self.format_select.place(x=600 ,y=58)
+
+    def new_format_select(self, formats):
+        """Create a pop-up with the formats to user select"""
+
+        def select():
+            self.handler.video.format = format_list.get(ACTIVE)
+            print(self.handler.video.format)
+            new_window.destroy()
+            self.set_format_selector()
+
+        # Seting a new window
+        new_window = Toplevel(self.master)
+        new_window.title('Select a new format')
+
+        format_list = Listbox(new_window, width=25, height=len(formats), selectbackground='red',  borderwidth=3)
+
         for format in formats:
-            self.format_select.insert(END, format)
+            format_list.insert(END, format)
 
-        self.format_select.place(x=630 ,y=52)
+        format_list.grid()
+
+        ok_button = Button(new_window, text='Select', command=select)
+        ok_button.grid()
+
+    def error(self, msg):
+        pass

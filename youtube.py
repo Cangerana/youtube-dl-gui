@@ -3,7 +3,7 @@ from terminal import Terminal
 class Video:
     def __init__(self):
         self.url = ''
-        self.format = ''
+        self.format = ' video and audio '
         self.path = '~/Downloads'
         self.terminal = Terminal()
 
