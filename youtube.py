@@ -8,7 +8,10 @@ class Video:
         self.terminal = Terminal()
 
     def enable_formats(self):
-        pass
+        return self.terminal.get_formats(self.url)
 
     def download(self):
         self.terminal.download(self.url, self.format, self.path)
+
+    def url_validate(self):
+        pass

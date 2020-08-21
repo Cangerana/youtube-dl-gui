@@ -83,13 +83,12 @@ class Window(Frame):
 
         def select():
             url = self.url_entry.get()
-            formats = []
-            # formats = self.handler.format_selector_handler(url)
-            # if 'Url' in formats:
-            #     self.error(msg=formats)
-            # else:
-            #     self.new_format_select(formats)
-            self.new_format_select(formats)
+
+            formats = self.handler.format_selector_handler(url)
+            if 'Url' in formats:
+                self.error(formats)
+            else:
+                self.new_format_select(formats)
 
         download_label = Label(self.master, text='Select a format')
 
@@ -123,4 +122,17 @@ class Window(Frame):
         ok_button.grid()
 
     def error(self, msg):
-        pass
+        def select():
+            new_window.destroy()
+
+        # Create a pop-up 
+        new_window = Toplevel(self.master)
+
+        new_window.title('Something is Wrong')
+        new_window.geometry('250x75')
+
+        error_label = Label(new_window, text=msg)
+        error_label.pack(side='top')
+
+        ok_button = Button(new_window, text='OK', command=select)
+        ok_button.pack(side='bottom')

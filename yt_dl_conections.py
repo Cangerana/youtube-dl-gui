@@ -12,7 +12,8 @@ class EventHandler():
         self.video = Video()
 
     def format_selector_handler(self, url):
-        pass
+        self.video.url = url
+        return self.video.enable_formats()
 
     def folder_select_handler(self, path):
         """Valid the selected destiny path

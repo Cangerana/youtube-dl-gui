@@ -41,3 +41,38 @@ class Terminal():
         title = [file for file in listdir(".") if file not in ls].pop()
 
         self._move_to_dir_path(title, path)
+
+    def get_formats(self, url):
+        """ Get the URl and return a list of possible formats"""
+        if len(url) >= 11 and url[-11:].isalnum():
+            system(f'youtube-dl -F {url}>>format_log') #gera um arquivo com os formatos
+            all_formats = self._get_formats()
+            system('rm format_log')
+        else:
+            return 'Url inválida'
+
+        formats = []
+
+        for format in all_formats:
+            formats.append([format['format'], format['code'], format['extension'], format['size']])
+
+        return formats
+
+    def _get_formats(self):
+        with open('format_log', 'r') as formats:
+            main_format = []
+            for format in formats.readlines()[3:]:
+                aux_format = format.split()
+
+                if aux_format[2] == 'audio' or aux_format[-1] == '(best)':
+                    main_format.append(
+                        {
+                        'format': aux_format[0],
+                        'extension': aux_format[1],
+                        'code': aux_format[2],
+                        'size': aux_format[-1] if aux_format[-1] != '(best)' else aux_format[-2]
+                        }
+                    )
+        print(main_format)
+        return main_format
+
