@@ -44,8 +44,20 @@ class Terminal():
 
     def get_formats(self, url):
         """ Get the URl and return a list of possible formats"""
-        if len(url) >= 11 and url[-11:].isalnum():
-            system(f'youtube-dl -F {url}>>format_log') #gera um arquivo com os formatos
+        url = url.strip()
+        if len(url) > 11:
+            code = url[32:43]
+
+        elif len(url) == 11:
+            code = url
+
+        else:
+            code = 'Url Inválida!'
+
+        print(code)
+
+        if '!' not in code:
+            system(f'youtube-dl -F {code}>>format_log') #gera um arquivo com os formatos
             all_formats = self._get_formats()
             system('rm format_log')
         else:

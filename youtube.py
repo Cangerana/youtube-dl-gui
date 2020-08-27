@@ -15,3 +15,4 @@ class Video:
 
     def url_validate(self):
         pass
+# _ - [0:9] [a:z] [A:Z]
